@@ -9,7 +9,7 @@ export default class Todo extends CommonEntity {
   @IsString()
   task!: string;
 
-  @Column({ type: "boolean" })
+  @Column({ type: "boolean", default: false })
   isComplete!: boolean;
 
   @ManyToOne(() => User, (user) => user.todos, { onDelete: "CASCADE" })
