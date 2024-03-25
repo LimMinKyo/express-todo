@@ -12,7 +12,7 @@ export default class Todo extends CommonEntity {
   @Column({ type: "boolean" })
   isComplete!: boolean;
 
-  @ManyToOne(() => User, (user) => user.todos)
+  @ManyToOne(() => User, (user) => user.todos, { onDelete: "CASCADE" })
   user!: User;
 
   @RelationId((todo: Todo) => todo.user)
