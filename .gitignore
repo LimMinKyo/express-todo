@@ -8,5 +8,3 @@ node_modules
 .vscode
 
 public/swagger.json
-
-package-lock.json
