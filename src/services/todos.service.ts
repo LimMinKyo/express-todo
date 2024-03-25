@@ -7,6 +7,10 @@ import {
   CreateTodoRequest,
   CreateTodoResponse,
 } from "../dtos/todos/create-todo.dto";
+import {
+  UpdateTodoRequest,
+  UpdateTodoResponse,
+} from "../dtos/todos/update-todo.dto";
 
 @Service()
 export default class TodosService {
@@ -33,5 +37,31 @@ export default class TodosService {
     );
 
     return { ok: true };
+  }
+
+  async updateTodo(
+    user: User,
+    todoId: number,
+    updateTodoRequest: UpdateTodoRequest
+  ): Promise<UpdateTodoResponse> {
+    let todo = await this.todosRepository.findOne({
+      where: { id: todoId },
+    });
+
+    if (!todo) {
+      return { ok: false, message: "해당 id의 할일이 없습니다." };
+    }
+
+    if (todo.userId !== user.id) {
+      return { ok: false, message: "해당 할일을 수정할 권한이 없습니다." };
+    }
+
+    todo = { ...todo, ...updateTodoRequest };
+
+    await this.todosRepository.save([todo]);
+
+    const { id, task, isComplete } = todo;
+
+    return { ok: true, data: { id, task, isComplete } };
   }
 }

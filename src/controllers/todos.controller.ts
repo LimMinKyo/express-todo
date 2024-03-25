@@ -7,6 +7,8 @@ import {
   Request,
   Post,
   Body,
+  Patch,
+  Path,
 } from "tsoa";
 import express from "express";
 import Container from "typedi";
@@ -16,6 +18,10 @@ import {
   CreateTodoRequest,
   CreateTodoResponse,
 } from "../dtos/todos/create-todo.dto";
+import {
+  UpdateTodoRequest,
+  UpdateTodoResponse,
+} from "../dtos/todos/update-todo.dto";
 
 const JWT_KEY = "jwt";
 
@@ -38,5 +44,20 @@ export default class TodosController {
     @Body() createTodoRequest: CreateTodoRequest
   ): Promise<CreateTodoResponse> {
     return await this.todosService.createTodo(req.user!, createTodoRequest);
+  }
+
+  @Patch("{id}")
+  @OperationId("할일 수정")
+  async updateTodo(
+    @Request() req: express.Request,
+    @Path("id") todoId: number,
+    @Body()
+    updateTodoRequest: UpdateTodoRequest
+  ): Promise<UpdateTodoResponse> {
+    return await this.todosService.updateTodo(
+      req.user!,
+      todoId,
+      updateTodoRequest
+    );
   }
 }
