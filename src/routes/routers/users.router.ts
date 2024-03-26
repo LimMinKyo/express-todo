@@ -4,16 +4,12 @@ import { jwtMiddleware } from "../../middleware/jwt.middleware";
 
 const usersRouter = Router();
 
+/**
+ * 내 정보 조회
+ */
 usersRouter.get("/my", jwtMiddleware, async (req, res) => {
-  try {
-    const response = await new UsersController().getMyInfo(req);
-    res.send(response);
-  } catch (error: any) {
-    if (error.message) {
-      return res.status(400).send({ ok: false, message: error.message });
-    }
-    res.status(500).send({ ok: false, message: "INTERNAL_SERVER_ERROR" });
-  }
+  const response = await new UsersController().getMyInfo(req);
+  res.send(response);
 });
 
 export default usersRouter;

@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import express from "express";
+import express, { Request, Response } from "express";
 import swaggerUi from "swagger-ui-express";
 import cookieParser from "cookie-parser";
 import router from "./routes";
@@ -42,6 +42,14 @@ function createApp() {
 
   // Routers
   app.use("/api", router);
+
+  // Error
+  app.use((error: any, req: Request, res: Response) => {
+    console.error(error.stack);
+    res
+      .status(error.status || 500)
+      .send({ ok: false, message: error.message || "INTERNAL_SERVER_ERROR" });
+  });
 
   // Server Start
   app.listen(4000, () => {
