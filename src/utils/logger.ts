@@ -1,6 +1,7 @@
 import colors from "colors/safe";
 import winston from "winston";
 import winstonDailyLog from "winston-daily-rotate-file";
+import path from "path";
 
 const { combine, timestamp, printf, colorize } = winston.format;
 
@@ -46,7 +47,7 @@ const logger = winston.createLogger({
       level: "info",
       datePattern: "YYYY-MM-DD",
       filename: "%DATE%.log",
-      dirname: LOG_DIR,
+      dirname: path.resolve(__dirname, LOG_DIR),
       maxFiles: LOG_MAX_FILES,
       zippedArchive: IS_PRODUCTION,
     }),
@@ -54,7 +55,7 @@ const logger = winston.createLogger({
       level: "warn",
       datePattern: "YYYY-MM-DD",
       filename: "%DATE%.warn.log",
-      dirname: LOG_DIR + "/warn",
+      dirname: path.resolve(__dirname, LOG_DIR + "/warn"),
       maxFiles: LOG_MAX_FILES,
       zippedArchive: IS_PRODUCTION,
     }),
@@ -62,7 +63,7 @@ const logger = winston.createLogger({
       level: "error",
       datePattern: "YYYY-MM-DD",
       filename: `%DATE%.error.log`,
-      dirname: LOG_DIR + "/error",
+      dirname: path.resolve(__dirname, LOG_DIR + "/error"),
       maxFiles: LOG_MAX_FILES,
       zippedArchive: IS_PRODUCTION,
     }),
