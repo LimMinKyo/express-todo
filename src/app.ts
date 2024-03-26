@@ -11,7 +11,7 @@ import { logger } from "./utils/logger";
 
 dotenv.config();
 
-function createApp() {
+export function createApp() {
   const app = express();
 
   app.use(cors());
@@ -46,9 +46,6 @@ function createApp() {
     })
   );
 
-  // Database
-  AppDataSource.initialize().then(() => console.log("☘️ DB Connection"));
-
   // Routers
   app.use("/api", router);
 
@@ -60,10 +57,19 @@ function createApp() {
       .send({ ok: false, message: error.message || "INTERNAL_SERVER_ERROR" });
   });
 
-  // Server Start
-  app.listen(4000, () => {
-    console.log("Server Start.");
-  });
+  if (process.env.NODE_ENV !== "test") {
+    // Database
+    AppDataSource.initialize()
+      .then(() => logger.info("☘️ DB Connection"))
+      .catch((error) => logger.error(error));
+
+    // Server Start
+    app.listen(process.env.PORT || 4000, () => {
+      console.log("Server Start.");
+    });
+  }
+
+  return app;
 }
 
 createApp();

@@ -4,6 +4,8 @@ logs
 
 # Env
 .env
+.env.test
+
 node_modules
 
 .vscode

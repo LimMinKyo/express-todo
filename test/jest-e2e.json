@@ -6,8 +6,5 @@
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   },
-  "moduleNameMapper": {
-    "^@/(.*)$": "<rootDir>../src/$1"
-  },
   "setupFilesAfterEnv": ["jest-extended/all"]
 }

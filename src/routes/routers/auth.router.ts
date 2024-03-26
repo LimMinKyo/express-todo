@@ -12,7 +12,7 @@ const authRouter = Router();
 authRouter.post("/signup", validateBody(SignupRequest), async (req, res) => {
   const signupRequest: SignupRequest = req.body;
   const response = await new AuthController().signup(signupRequest);
-  res.send(response);
+  res.status(201).send(response);
 });
 
 /**
