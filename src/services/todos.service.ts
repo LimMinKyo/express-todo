@@ -11,6 +11,7 @@ import {
   UpdateTodoRequest,
   UpdateTodoResponse,
 } from "../dtos/todos/update-todo.dto";
+import { DeleteTodoResponse } from "../dtos/todos/delete-todo.dto";
 
 @Service()
 export default class TodosService {
@@ -32,11 +33,11 @@ export default class TodosService {
     user: User,
     createTodoRequest: CreateTodoRequest
   ): Promise<CreateTodoResponse> {
-    await this.todosRepository.save(
+    const { id, task, isComplete } = await this.todosRepository.save(
       this.todosRepository.create({ user, ...createTodoRequest })
     );
 
-    return { ok: true };
+    return { ok: true, data: { id, task, isComplete } };
   }
 
   async updateTodo(
@@ -63,5 +64,21 @@ export default class TodosService {
     const { id, task, isComplete } = todo;
 
     return { ok: true, data: { id, task, isComplete } };
+  }
+
+  async deleteTodo(user: User, todoId: number): Promise<DeleteTodoResponse> {
+    const todo = await this.todosRepository.findOne({ where: { id: todoId } });
+
+    if (!todo) {
+      return { ok: false, message: "해당 id의 할일이 없습니다." };
+    }
+
+    if (todo.userId !== user.id) {
+      return { ok: false, message: "해당 할일을 수정할 권한이 없습니다." };
+    }
+
+    await this.todosRepository.delete(todoId);
+
+    return { ok: true };
   }
 }

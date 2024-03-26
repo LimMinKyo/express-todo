@@ -9,6 +9,7 @@ import {
   Body,
   Patch,
   Path,
+  Delete,
 } from "tsoa";
 import express from "express";
 import Container from "typedi";
@@ -22,6 +23,7 @@ import {
   UpdateTodoRequest,
   UpdateTodoResponse,
 } from "../dtos/todos/update-todo.dto";
+import { DeleteTodoResponse } from "../dtos/todos/delete-todo.dto";
 
 const JWT_KEY = "jwt";
 
@@ -59,5 +61,14 @@ export default class TodosController {
       todoId,
       updateTodoRequest
     );
+  }
+
+  @Delete("{id}")
+  @OperationId("할일 삭제")
+  async deleteTodo(
+    @Request() req: express.Request,
+    @Path("id") todoId: number
+  ): Promise<DeleteTodoResponse> {
+    return await this.todosService.deleteTodo(req.user!, todoId);
   }
 }
