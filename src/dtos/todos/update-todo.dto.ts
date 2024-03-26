@@ -1,6 +1,6 @@
 import { IsBoolean, IsNotEmpty, IsString } from "class-validator";
 import { ResponseDto } from "../common.dto";
-import Todo from "../../entities/todo.entity";
+import { TodoDto } from "./common/todo.dto";
 
 export class UpdateTodoRequest {
   @IsString()
@@ -11,6 +11,4 @@ export class UpdateTodoRequest {
   isComplete!: boolean;
 }
 
-export class UpdateTodoResponse extends ResponseDto<
-  Pick<Todo, "id" | "task" | "isComplete">
-> {}
+export class UpdateTodoResponse extends ResponseDto<TodoDto> {}

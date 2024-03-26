@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString } from "class-validator";
 import { ResponseDto } from "../common.dto";
-import Todo from "../../entities/todo.entity";
+import { TodoDto } from "./common/todo.dto";
 
 export class CreateTodoRequest {
   @IsString()
@@ -8,6 +8,4 @@ export class CreateTodoRequest {
   task!: string;
 }
 
-export class CreateTodoResponse extends ResponseDto<
-  Pick<Todo, "id" | "task" | "isComplete">
-> {}
+export class CreateTodoResponse extends ResponseDto<TodoDto> {}
