@@ -9,7 +9,9 @@
 - jest
 - supertest
 - nodemon
-- class-validator, class-transformer
+- class-validator
+- class-transformer
 - mysql
 - swagger
 - typedi
+- winston

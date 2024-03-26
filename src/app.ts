@@ -7,6 +7,7 @@ import { AppDataSource } from "./data-source";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import cors from "cors";
+import { logger } from "./utils/logger";
 
 dotenv.config();
 
@@ -17,7 +18,15 @@ function createApp() {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(cookieParser());
-  app.use(morgan("tiny"));
+  app.use(
+    morgan(":method :status :url :response-time ms", {
+      stream: {
+        write: (message) => {
+          logger.info(message);
+        },
+      },
+    })
+  );
   app.use(express.static("public"));
 
   // Health Check
@@ -45,7 +54,7 @@ function createApp() {
 
   // Error
   app.use((error: any, req: Request, res: Response) => {
-    console.error(error.stack);
+    logger.error(error.stack);
     res
       .status(error.status || 500)
       .send({ ok: false, message: error.message || "INTERNAL_SERVER_ERROR" });

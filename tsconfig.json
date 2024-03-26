@@ -13,8 +13,7 @@
     "allowJs": true,
     "noEmit": false,
     "esModuleInterop": true,
-    "strict": true,
-    "typeRoots": ["./node_modules/@types", "./src/types"]
+    "strict": true
   },
   "ts-node": { "files": true },
   "include": ["./src/**/*", "src/data-source.ts"],
