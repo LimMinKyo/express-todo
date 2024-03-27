@@ -12,7 +12,7 @@ import {
   Delete,
 } from "tsoa";
 import express from "express";
-import Container from "typedi";
+import Container, { Service } from "typedi";
 import TodosService from "../services/todos.service";
 import { GetTodosResponse } from "../dtos/todos/get-todos.dto";
 import {
@@ -30,6 +30,7 @@ const JWT_KEY = "jwt";
 @Tags("할일API")
 @Security(JWT_KEY)
 @Route("api/todos")
+@Service()
 export default class TodosController {
   private readonly todosService = Container.get(TodosService);
 

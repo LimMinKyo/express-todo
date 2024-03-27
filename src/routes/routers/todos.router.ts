@@ -3,14 +3,17 @@ import TodosController from "../../controllers/todos.controller";
 import { CreateTodoRequest } from "../../dtos/todos/create-todo.dto";
 import { UpdateTodoRequest } from "../../dtos/todos/update-todo.dto";
 import { validateBody } from "../../middleware/validate-body.middleware";
+import Container from "typedi";
 
 const todosRouter = Router();
+
+const todosController = Container.get(TodosController);
 
 /**
  * 할일 리스트 조회
  */
 todosRouter.get("/", async (req, res) => {
-  const response = await new TodosController().getTodos(req);
+  const response = await todosController.getTodos(req);
   res.send(response);
 });
 
@@ -19,10 +22,7 @@ todosRouter.get("/", async (req, res) => {
  */
 todosRouter.post("/", validateBody(CreateTodoRequest), async (req, res) => {
   const createTodoRequest: CreateTodoRequest = req.body;
-  const response = await new TodosController().createTodo(
-    req,
-    createTodoRequest
-  );
+  const response = await todosController.createTodo(req, createTodoRequest);
   res.status(201).send(response);
 });
 
@@ -32,7 +32,7 @@ todosRouter.post("/", validateBody(CreateTodoRequest), async (req, res) => {
 todosRouter.patch("/:id", validateBody(UpdateTodoRequest), async (req, res) => {
   const updateTodoRequest: UpdateTodoRequest = req.body;
   const todoId = +req.params.id;
-  const response = await new TodosController().updateTodo(
+  const response = await todosController.updateTodo(
     req,
     todoId,
     updateTodoRequest
@@ -45,7 +45,7 @@ todosRouter.patch("/:id", validateBody(UpdateTodoRequest), async (req, res) => {
  */
 todosRouter.delete("/:id", async (req, res) => {
   const todoId = +req.params.id;
-  const response = await new TodosController().deleteTodo(req, todoId);
+  const response = await todosController.deleteTodo(req, todoId);
   res.send(response);
 });
 

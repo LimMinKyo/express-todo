@@ -1,11 +1,12 @@
 import { Body, Post, Route, Tags, OperationId } from "tsoa";
-import Container from "typedi";
+import Container, { Service } from "typedi";
 import AuthService from "../services/auth.service";
 import { SignupRequest, SignupResponse } from "../dtos/auth/signup.dto";
 import { LoginRequest, LoginResponse } from "../dtos/auth/login.dto";
 
 @Tags("인증API")
 @Route("api/auth")
+@Service()
 export default class AuthController {
   private readonly authService = Container.get(AuthService);
 
