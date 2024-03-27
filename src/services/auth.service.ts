@@ -5,10 +5,15 @@ import User from "../entities/user.entity";
 import { LoginRequest, LoginResponse } from "../dtos/auth/login.dto";
 import { hashUtils } from "../utils/hash";
 import { jwtUtils } from "../utils/jwt";
+import { Repository } from "typeorm";
 
 @Service()
 export default class AuthService {
-  private readonly usersRepository = AppDataSource.getRepository(User);
+  private readonly usersRepository: Repository<User>;
+
+  constructor(repository = AppDataSource.getRepository(User)) {
+    this.usersRepository = repository;
+  }
 
   async signup(signupRequest: SignupRequest): Promise<SignupResponse> {
     const user = await this.usersRepository.findOne({

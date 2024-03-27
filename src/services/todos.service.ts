@@ -12,10 +12,15 @@ import {
   UpdateTodoResponse,
 } from "../dtos/todos/update-todo.dto";
 import { DeleteTodoResponse } from "../dtos/todos/delete-todo.dto";
+import { Repository } from "typeorm";
 
 @Service()
 export default class TodosService {
-  private readonly todosRepository = AppDataSource.getRepository(Todo);
+  private readonly todosRepository: Repository<Todo>;
+
+  constructor(repository = AppDataSource.getRepository(Todo)) {
+    this.todosRepository = repository;
+  }
 
   async getTodos(user: User): Promise<GetTodosResponse> {
     const todos = await this.todosRepository.find({

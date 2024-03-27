@@ -1,10 +1,15 @@
 import { Service } from "typedi";
 import { AppDataSource } from "../data-source";
 import User from "../entities/user.entity";
+import { Repository } from "typeorm";
 
 @Service()
 export default class UsersService {
-  private readonly usersRepository = AppDataSource.getRepository(User);
+  private readonly usersRepository: Repository<User>;
+
+  constructor(repository = AppDataSource.getRepository(User)) {
+    this.usersRepository = repository;
+  }
 
   async getMyInfo(user: User) {
     const { password, ...rest } = user;
