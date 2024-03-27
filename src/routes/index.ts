@@ -7,7 +7,7 @@ import { jwtMiddleware } from "../middleware/jwt.middleware";
 const router = Router();
 
 router.use("/auth", authRouter);
-router.use("/user", usersRouter);
+router.use("/users", usersRouter);
 router.use("/todos", jwtMiddleware, todosRouter);
 
 export default router;

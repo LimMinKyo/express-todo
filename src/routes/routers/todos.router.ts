@@ -2,6 +2,7 @@ import { Router } from "express";
 import TodosController from "../../controllers/todos.controller";
 import { CreateTodoRequest } from "../../dtos/todos/create-todo.dto";
 import { UpdateTodoRequest } from "../../dtos/todos/update-todo.dto";
+import { validateBody } from "../../middleware/validate-body.middleware";
 
 const todosRouter = Router();
 
@@ -16,19 +17,19 @@ todosRouter.get("/", async (req, res) => {
 /**
  * 할일 생성
  */
-todosRouter.post("/", async (req, res) => {
+todosRouter.post("/", validateBody(CreateTodoRequest), async (req, res) => {
   const createTodoRequest: CreateTodoRequest = req.body;
   const response = await new TodosController().createTodo(
     req,
     createTodoRequest
   );
-  res.send(response);
+  res.status(201).send(response);
 });
 
 /**
  * 할일 수정
  */
-todosRouter.patch("/:id", async (req, res) => {
+todosRouter.patch("/:id", validateBody(UpdateTodoRequest), async (req, res) => {
   const updateTodoRequest: UpdateTodoRequest = req.body;
   const todoId = +req.params.id;
   const response = await new TodosController().updateTodo(
