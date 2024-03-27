@@ -10,6 +10,7 @@ import {
   Patch,
   Path,
   Delete,
+  Controller,
 } from "tsoa";
 import express from "express";
 import Container, { Service } from "typedi";
@@ -31,7 +32,7 @@ const JWT_KEY = "jwt";
 @Security(JWT_KEY)
 @Route("api/todos")
 @Service()
-export default class TodosController {
+export default class TodosController extends Controller {
   private readonly todosService = Container.get(TodosService);
 
   @Get("/")

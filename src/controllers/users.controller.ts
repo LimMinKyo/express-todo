@@ -1,4 +1,12 @@
-import { Route, Tags, OperationId, Get, Security, Request } from "tsoa";
+import {
+  Route,
+  Tags,
+  OperationId,
+  Get,
+  Security,
+  Request,
+  Controller,
+} from "tsoa";
 import { GetMyInfoResponse } from "../dtos/users/my.dto";
 import express from "express";
 import Container, { Service } from "typedi";
@@ -9,7 +17,7 @@ const JWT_KEY = "jwt";
 @Tags("유저API")
 @Route("api/users")
 @Service()
-export default class UsersController {
+export default class UsersController extends Controller {
   private readonly usersService = Container.get(UsersService);
 
   @Get("/my")
