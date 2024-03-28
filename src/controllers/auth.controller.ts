@@ -1,5 +1,5 @@
-import { Body, Post, Route, Tags, OperationId, Controller } from "tsoa";
-import Container, { Service } from "typedi";
+import { Body, Post, Route, Tags, OperationId } from "tsoa";
+import { Service } from "typedi";
 import AuthService from "../services/auth.service";
 import { SignupRequest, SignupResponse } from "../dtos/auth/signup.dto";
 import { LoginRequest, LoginResponse } from "../dtos/auth/login.dto";
@@ -7,8 +7,8 @@ import { LoginRequest, LoginResponse } from "../dtos/auth/login.dto";
 @Tags("인증API")
 @Route("api/auth")
 @Service()
-export default class AuthController extends Controller {
-  private readonly authService = Container.get(AuthService);
+export default class AuthController {
+  constructor(private readonly authService: AuthService) {}
 
   @Post("/signup")
   @OperationId("회원가입")
